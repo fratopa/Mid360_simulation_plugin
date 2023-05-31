@@ -1,0 +1,32 @@
+<?xml version="1.0" ?>
+<launch>
+
+
+	<!-- This is where we select the model file for the UAV-->
+	<arg name="UAV_model" value="$(find livox_laser_simulation)/models/sensors_only/model.sdf" />
+	<!-- This is where we set the initial position of the UAV-->
+	<arg name="x" value="0" />
+  	<arg name="y" value="0" />
+  	<arg name="z" value="0" />
+
+	<!-- This is where we select the world file-->
+	<arg name="world" default="$(find livox_laser_simulation)/worlds/test_pattern.world" />
+
+	<include file="$(find gazebo_ros)/launch/empty_world.launch">
+		<arg name="world_name" value="$(arg world)"/>
+		<arg name="paused" value="false"/>
+		<arg name="use_sim_time" value="true"/>
+		<arg name="gui" value="true"/>
+		<arg name="headless" value="false"/>
+		<arg name="debug" value="false"/>
+		<arg name="verbose" value="true"/>
+	</include>
+
+	<!-- This node launches rviz -->
+	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find livox_laser_simulation)/rviz/test_pattern.rviz" />
+
+	<!-- spawn the iris_with_ardupilot model, the name must be iris_demo to be detected by ardupilot-->
+	<node name="spawn_model" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
+		args="-file $(arg UAV_model) -x $(arg x) -y $(arg y) -z $(arg z) -sdf -model iris_demo " />
+
+</launch>
