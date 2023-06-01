@@ -41,8 +41,7 @@ This will launch the plugin with a test pattern. You should see a point cloud in
 
 If you use this plugin in your research, please cite the following paper:
 
-```
-[Yesterday 11:21 AM] Cella Marco
+```bibtex
 @Article{isprs-archives-XLVIII-1-W1-2023-539-2023,
 AUTHOR = {Vultaggio, F. and d'Apolito, F. and Sulzbachner, C. and Fanta-Jende, P.},
 TITLE = {SIMULATION OF LOW-COST MEMS-LIDAR AND ANALYSIS OF ITS EFFECT ON THE PERFORMANCES OF STATE-OF-THE-ART SLAMS},
