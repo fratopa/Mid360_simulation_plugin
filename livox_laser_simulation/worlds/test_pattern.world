@@ -13,12 +13,12 @@
       <link name="body">
         <visual name="visual">
           <geometry>
-            <mesh><uri>file:///home/vultaggiof/mid360-sim/src/livox_laser_simulation/worlds/pattern_test.dae</uri></mesh>
+            <mesh><uri>pattern_test.dae</uri></mesh>
           </geometry>
         </visual>
         <collision name="collision">
           <geometry>
-            <mesh><uri>file:///home/vultaggiof/mid360-sim/src/livox_laser_simulation/worlds/pattern_test.dae</uri></mesh>
+            <mesh><uri>pattern_test.dae</uri></mesh>
           </geometry>
         </collision>
       </link>

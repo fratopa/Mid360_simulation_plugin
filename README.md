@@ -13,26 +13,37 @@ Main changes:
 This plugin relies on the Livox ROS driver to generate all the custom messages of the real Livox mid-360. We have included a version of the driver in this repo we are sure will work with the plugin. However, if you want to use a different version of the driver, you can do so by following the instructions in the official and up to date [Livox ROS driver repo](https://github.com/Livox-SDK/livox_ros_driver2).
 
 ## Build instructions
+1. Install the Livox SDK following the instructions in the [official repo](https://github.com/Livox-SDK/Livox-SDK2/tree/master)
 
-1. Clone this repo into your catkin workspace src folder.
+2. Clone this repo into your catkin workspace src folder.
 ```bash
 cd ~/catkin_ws/src
 git clone https://github.com/fratopa/Mid360_simulation_plugin.git
 ```
-2. Build the Livox ROS driver.
+3. Build the Livox ROS driver.
 ```bash
 cd ~/catkin_ws/src/Mid360_simulation_plugin/livox_ros_driver2
+source opt/ros/noetic/setup.bash
 ./build.sh ROS1
 ```
-3. Build the plugin.
+4. Build the plugin.
 ```bash
 cd ~/catkin_ws
+source opt/ros/noetic/setup.bash
 catkin build -DCMAKE_BUILD_TYPE=Release
 ```
+### Tested on
+| OS    | COMPILER       | Cmake version  |
+| --- |----------------| -------------- |
+| Ubuntu 20.04 | GCC >= 9.4     | > 3.16.3         |
+
+
+
 ## Run instructions
 
 To verify that the plugin is working correctly you can run the minimal example:
 ```bash
+source ~/catkin_ws/devel/setup.bash
 roslaunch livox_laser_simulation test_pattern.launch
 ```
 This will launch the plugin with a test pattern. You should see a point cloud in RViz and a gazebo window with a spinning laser.
