@@ -39,7 +39,7 @@ void convertDataToRotateInfo(const std::vector<std::vector<double>> &datas, std:
             avia_infos.back().time = data[0];
             avia_infos.back().azimuth = data[1] * deg_2_rad;
             avia_infos.back().zenith = data[2] * deg_2_rad - M_PI_2;
-            avia_infos.back().line = i % 6;
+            avia_infos.back().line = i % 4;
         } else {
             ROS_INFO_STREAM("data size is not 3!");
         }
