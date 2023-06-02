@@ -15,7 +15,7 @@
 #include <gazebo/sensors/RaySensor.hh>
 #include <gazebo/transport/Node.hh>
 #include <ignition/math/Vector3.hh>
-#include <livox_ros_driver2/CustomMsg.h>
+#include <livox_laser_simulation/CustomMsg.h>
 #include <limits>
 #include "livox_laser_simulation/csv_reader.hpp"
 #include "livox_laser_simulation/livox_ode_multiray_shape.h"
@@ -114,8 +114,8 @@ void LivoxPointsPlugin::Load(gazebo::sensors::SensorPtr _parent, sdf::ElementPtr
         case SENSOR_MSG_POINT_CLOUD2_LIVOXPOINTXYZRTL:
             rosPointPub = rosNode->advertise<sensor_msgs::PointCloud2>(curr_scan_topic, 5);
             break;
-        case livox_ros_driver2_CUSTOM_MSG:
-            rosPointPub = rosNode->advertise<livox_ros_driver2::CustomMsg>(curr_scan_topic, 5);
+        case livox_laser_simulation_CUSTOM_MSG:
+            rosPointPub = rosNode->advertise<livox_laser_simulation::CustomMsg>(curr_scan_topic, 5);
             break;
         default:
             break;
@@ -160,7 +160,7 @@ void LivoxPointsPlugin::OnNewLaserScans() {
             case SENSOR_MSG_POINT_CLOUD2_LIVOXPOINTXYZRTL:
                 PublishPointCloud2XYZRTL(points_pair);
                 break;
-            case livox_ros_driver2_CUSTOM_MSG:
+            case livox_laser_simulation_CUSTOM_MSG:
                 PublishLivoxROSDriverCustomMsg(points_pair);
                 break;
             default:
@@ -542,7 +542,7 @@ void LivoxPointsPlugin::PublishLivoxROSDriverCustomMsg(std::vector<std::pair<int
 
     sensor_msgs::PointCloud2 scan_point;
 
-    livox_ros_driver2::CustomMsg msg;
+    livox_laser_simulation::CustomMsg msg;
     // msg.header.frame_id = raySensor->ParentName();
 
     msg.header.frame_id = frameName;
@@ -579,7 +579,7 @@ void LivoxPointsPlugin::PublishLivoxROSDriverCustomMsg(std::vector<std::pair<int
             auto axis = ray * ignition::math::Vector3d(1.0, 0.0, 0.0);
             auto point = range * axis;
             // pt.intensity = static_cast<float>(intensity);
-            livox_ros_driver2::CustomPoint pt;
+            livox_laser_simulation::CustomPoint pt;
             pt.x = point.X();
             pt.y = point.Y();
             pt.z = point.Z();
