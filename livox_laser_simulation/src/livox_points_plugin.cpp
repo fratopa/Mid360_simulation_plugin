@@ -483,6 +483,7 @@ void LivoxPointsPlugin::PublishPointCloud2XYZRTLT(std::vector<std::pair<int, Avi
     pcl::PointCloud<pcl::LivoxPointXyzrtlt> pc;
     pc.points.reserve(points_pair.size());
     ros::Time header_timestamp = ros::Time::now();
+    auto header_timestamp_sec_nsec = header_timestamp.toNSec();
 
     
     // auto start = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
@@ -593,14 +594,15 @@ void LivoxPointsPlugin::PublishLivoxROSDriverCustomMsg(std::vector<std::pair<int
             // ROS_INFO_STREAM("offset_time: " << pt.offset_time );
             pt.tag = 0x10;
             pt.reflectivity = 100;
+            pt.offset_time = (1e9/200000*i);
             msg.points.push_back(pt);
         }
     }
-    clock_gettime(CLOCK_REALTIME, &tn);
-    uint64_t interval = tn.tv_nsec - msg.timebase;
-    for (int i = 0; i < msg.points.size(); ++i) {
-        msg.points[i].offset_time = (float)interval / msg.points.size() * i * 10;
-    }
+    // clock_gettime(CLOCK_REALTIME, &tn);
+    // uint64_t interval = tn.tv_nsec - msg.timebase;
+    // for (int i = 0; i < msg.points.size(); ++i) {
+    //     msg.points[i].offset_time = (float)interval / msg.points.size() * i * 10;
+    // }
     msg.point_num = msg.points.size();
     rosPointPub.publish(msg);
     ros::spinOnce();
