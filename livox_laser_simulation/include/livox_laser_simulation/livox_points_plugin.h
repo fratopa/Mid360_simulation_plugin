@@ -78,7 +78,7 @@ class LivoxPointsPlugin : public RayPlugin {
     enum PointCloudType {
         SENSOR_MSG_POINT_CLOUD = 0,
         SENSOR_MSG_POINT_CLOUD2_POINTXYZ = 1,
-        SENSOR_MSG_POINT_CLOUD2_LIVOXPOINTXYZRTL = 2,
+        SENSOR_MSG_POINT_CLOUD2_LIVOXPOINTXYZRTLT = 2,
         livox_laser_simulation_CUSTOM_MSG = 3,
     };
 
@@ -91,8 +91,8 @@ class LivoxPointsPlugin : public RayPlugin {
 
     void PublishPointCloud(std::vector<std::pair<int, AviaRotateInfo>>& points_pair);
     void PublishPointCloud2XYZ(std::vector<std::pair<int, AviaRotateInfo>>& points_pair);
-    void PublishPointCloud2XYZRTL(std::vector<std::pair<int, AviaRotateInfo>>& points_pair);
     void PublishLivoxROSDriverCustomMsg(std::vector<std::pair<int, AviaRotateInfo>>& points_pair);
+    void PublishPointCloud2XYZRTLT(std::vector<std::pair<int, AviaRotateInfo>>& points_pair);
 
     boost::shared_ptr<physics::LivoxOdeMultiRayShape> rayShape;
     gazebo::physics::CollisionPtr laserCollision;

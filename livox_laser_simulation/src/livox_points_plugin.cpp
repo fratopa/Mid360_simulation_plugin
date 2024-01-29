@@ -111,7 +111,7 @@ void LivoxPointsPlugin::Load(gazebo::sensors::SensorPtr _parent, sdf::ElementPtr
             rosPointPub = rosNode->advertise<sensor_msgs::PointCloud>(curr_scan_topic, 5);
             break;
         case SENSOR_MSG_POINT_CLOUD2_POINTXYZ:
-        case SENSOR_MSG_POINT_CLOUD2_LIVOXPOINTXYZRTL:
+        case SENSOR_MSG_POINT_CLOUD2_LIVOXPOINTXYZRTLT:
             rosPointPub = rosNode->advertise<sensor_msgs::PointCloud2>(curr_scan_topic, 5);
             break;
         case livox_laser_simulation_CUSTOM_MSG:
@@ -157,8 +157,8 @@ void LivoxPointsPlugin::OnNewLaserScans() {
             case SENSOR_MSG_POINT_CLOUD2_POINTXYZ:
                 PublishPointCloud2XYZ(points_pair);
                 break;
-            case SENSOR_MSG_POINT_CLOUD2_LIVOXPOINTXYZRTL:
-                PublishPointCloud2XYZRTL(points_pair);
+            case SENSOR_MSG_POINT_CLOUD2_LIVOXPOINTXYZRTLT:
+                PublishPointCloud2XYZRTLT(points_pair);
                 break;
             case livox_laser_simulation_CUSTOM_MSG:
                 PublishLivoxROSDriverCustomMsg(points_pair);
@@ -466,7 +466,7 @@ void LivoxPointsPlugin::PublishPointCloud2XYZ(std::vector<std::pair<int, AviaRot
     }
 }
 
-void LivoxPointsPlugin::PublishPointCloud2XYZRTL(std::vector<std::pair<int, AviaRotateInfo>> &points_pair) {
+void LivoxPointsPlugin::PublishPointCloud2XYZRTLT(std::vector<std::pair<int, AviaRotateInfo>> &points_pair) {
     auto rayCount = RayCount();
     auto verticalRayCount = VerticalRayCount();
     auto angle_min = AngleMin().Radian();
@@ -480,9 +480,12 @@ void LivoxPointsPlugin::PublishPointCloud2XYZRTL(std::vector<std::pair<int, Avia
 
     sensor_msgs::PointCloud2 scan_point;
 
-    pcl::PointCloud<pcl::LivoxPointXyzrtl> pc;
+    pcl::PointCloud<pcl::LivoxPointXyzrtlt> pc;
     pc.points.reserve(points_pair.size());
-    ros::Time timestamp = ros::Time::now();
+    ros::Time header_timestamp = ros::Time::now();
+
+    
+    // auto start = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
     for (int i = 0; i < points_pair.size(); ++i) {
         std::pair<int, AviaRotateInfo> &pair = points_pair[i];
         int verticle_index = roundf((pair.second.zenith - verticle_min) / verticle_incre);
@@ -508,18 +511,21 @@ void LivoxPointsPlugin::PublishPointCloud2XYZRTL(std::vector<std::pair<int, Avia
 
             auto axis = ray * ignition::math::Vector3d(1.0, 0.0, 0.0);
             auto point = range * axis;
-            pcl::LivoxPointXyzrtl pt;
+            pcl::LivoxPointXyzrtlt pt;
+            
             pt.x = point.X();
             pt.y = point.Y();
             pt.z = point.Z();
             pt.intensity = static_cast<float>(intensity);
             pt.tag = 0;
             pt.line = pair.second.line;
+            pt.timestamp = static_cast<double>(1e9/200000*i)+header_timestamp_sec_nsec;    
+
             pc.push_back(std::move(pt));
         }
     }
     pcl::toROSMsg(pc, scan_point);
-    scan_point.header.stamp = timestamp;
+    scan_point.header.stamp = header_timestamp;
     scan_point.header.frame_id = frameName;
     rosPointPub.publish(scan_point);
     ros::spinOnce();

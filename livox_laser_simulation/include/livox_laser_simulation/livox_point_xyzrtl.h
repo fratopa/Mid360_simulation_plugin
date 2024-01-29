@@ -16,23 +16,29 @@
 #include <pcl/point_types.h>
 
 namespace pcl{
-struct LivoxPointXyzrtl{
-  PCL_ADD_POINT4D;
+struct LivoxPointXyzrtlt{
+  float x;            /**< x             */
+  float y;            /**< y             */
+  float z;            /**< z             */
+  
   float intensity; /**< intensity   */
   uint8_t tag;        /**< Livox point tag   */
   uint8_t line;       /**< Laser line id     */
+  double timestamp; /**< Timestamp         */
+  EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
   EIGEN_ALIGN16;
 };
 
 }
 
-POINT_CLOUD_REGISTER_POINT_STRUCT (LivoxPointXyzrtl,  
+POINT_CLOUD_REGISTER_POINT_STRUCT (LivoxPointXyzrtlt,  
                                    (float, x, x)
                                    (float, y, y)
                                    (float, z, z)
                                    (float, intensity, intensity)
                                    (uint8_t, tag, tag)
                                    (uint8_t, line, line)
+                                   (double, timestamp, timestamp)
 )
 
 #endif

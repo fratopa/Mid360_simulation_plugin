@@ -89,7 +89,7 @@ The main parameters you may want to change are:
 - `publish_pointcloud_type`: This changes the format in which the pointcloud will be published:
     - `0`: The pointcloud will be published as a sensor_msgs::PointCloud message
     - `1`: The pointcloud will be published as a sensor_msgs::pointcloud2 message with fields `x`, `y`, `z`
-    - `2` (default): The pointcloud will be published as a sensor_msgs::pointcloud2 message with fields `x`, `y`, `z`, `intensity`, `tag`, `line`. 
+    - `2` (default): The pointcloud will be published as a sensor_msgs::pointcloud2 message with fields `x`, `y`, `z`, `intensity`, `tag`, `line`, `timestamp`. 
     - `3`: The pointcloud will be published in the Livox custom message format. 
     ```
     offset_time: 
